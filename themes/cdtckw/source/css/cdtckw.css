@@ -1,0 +1,8 @@
+/* bootstrap */
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+body {
+  margin: 0;
+}

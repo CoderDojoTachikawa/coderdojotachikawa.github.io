@@ -1,4 +1,8 @@
-$(function () {
+function getConnpassEvents() {
+  $(".list-group").append(
+    '<li class="list-group-item list-group-item-danger"><h2><span class="radius-f-20 v-middle"><img class="icon-l icon-shadow" src="../svg/calendar.svg">イベント情報<img class="icon-l icon-shadow" src="../svg/flag_2.svg");"><span></h2></li>'
+  );
+
   $.ajax({
     type: "GET",
     url: "https://connpass.com/api/v1/event/",
@@ -6,146 +10,103 @@ $(function () {
     data: {
       series_id: "4692",
       order: "2",
-      // count: "2",
+      count: "3",
     },
     cache: false,
-  })
-    .done(function (data, textStatus, jqXHR) {
-      console.log(data);
-    //   var count = 0;
-    //   var toDate = moment().format("YYYYMMDD");
+  }).done(function (data, textStatus, jqXHR) {
+    let toDate = new Date();
+    data.events.forEach((event) => {
+      let eventList = '<li class="list-group-item">';
+      let startDate = new Date(event.started_at);
+      let endDate = new Date(event.ended_at);
+      let chkDate = compareDate(toDate, startDate);
+      eventList += '<b>';
+      // 日程
+      eventList += '<h4 class="d-inline">';
+      if (0 < chkDate) {
+        eventList += '<span class="badge bg-primary">';
+      } else {
+        eventList += '<span class="badge bg-secondary">';
+        eventList += '（終了）';
+      }
+      eventList += startDate.getFullYear() + '年' + (startDate.getMonth() + 1) + '月' + startDate.getDate() + '日';
+      eventList += '</span>';
+      eventList += '</h4>';
+      // タイトル
+      eventList += '<div class="mt-3">';
+      eventList += '<h5>' + event.title + '</h5>';
+      eventList += '</div>';
+      eventList += '<div class="mt-2">' + event.catch + '</div>';
+      // 時間
+      eventList += '<div class="mt-3">';
+      eventList += '<img class="icon-m icon-shadow" src="../svg/clock.svg">';
+      
+      eventList += startDate.getHours() + ':' + (startDate.getMinutes() < 10 ? '0' + startDate.getMinutes() : startDate.getMinutes());
+      eventList += '～';
+      eventList += endDate.getHours() + ':' + (endDate.getMinutes() < 10 ? '0' + endDate.getMinutes() : endDate.getMinutes());
+      // 開催場所
+      eventList += '<img class="icon-m icon-shadow" src="../svg/map.svg">';
+      eventList += event.place;
+      // アクセス
+      eventList += '<img class="icon-m icon-shadow" src="../svg/locator.svg">';
+      eventList += event.address;
+      eventList += '</div>';
+      // 申込状況
+      eventList += '<div class="row">';
+      eventList += '<div class="col-md-6">';
+      eventList += '<img class="icon-m icon-shadow" src="../svg/contact.svg">';
+      if (null === event.limit) {
+        eventList += '参加方法は詳細を確認してください。';
+      } else {
+        eventList += '人数: ' + event.accepted + '人 / 最大 ' + event.limit + '人';
+        eventList += ' ( 待ち ' + event.waiting + '人 )';
+      }
+      eventList += '</div>';
+      // ボタン
+      eventList += '<div class="col-md-6">';
+      eventList += '<a class="td-none" href="' + event.event_url + '">';
+      eventList += '<div class="d-grid gap-2 mb-2">';
+      if (0 < chkDate) {
+        eventList += '<button type="button" class="btn btn-success">';
+        eventList += '参加申し込みはこちらから';
+      } else {
+        eventList += '<button type="button" class="btn btn-warning">';
+        eventList += '詳細はこちら';
+      }
+      eventList += '</button>';
+      eventList += '</div>';
+      eventList += '</a>';
+      eventList += '</div>';
+      eventList += '</div>';
+      eventList += '</b>';
+      eventList += '</list>';
 
-    //   data.events.forEach((element) => {
-    //     if (1 == count) {
-    //       // 要素を表示
-    //       $("#first-card").show();
-
-    //       // イベント開催日時 (ISO-8601形式)
-    //       var eventDate = data.events[count].started_at;
-    //       var eventEnd = data.events[count].ended_at;
-    //       var evDate =
-    //         eventDate.substr(0, 4) +
-    //         eventDate.substr(5, 2) +
-    //         eventDate.substr(8, 2);
-
-    //       // connpass.com 上のURL
-    //       if (evDate <= toDate) {
-    //         $("#to_enterBtn").text("終了しました");
-    //         $("#to_eventLink").prop("disabled", true);
-    //         //$('#to-table').remove();
-    //       } else {
-    //         var eventUrl = data.events[count].event_url;
-    //         $("#to_eventLink").attr(
-    //           "onClick",
-    //           "location.href='" + eventUrl + "'"
-    //         );
-    //         $("#to_enterBtn").text("参加お申込みはこちら");
-    //       }
-
-    //       // タイトル
-    //       var eventTitle = data.events[count].title;
-    //       $("#to_eventTitle").text(
-    //         eventTitle.substring(0, eventTitle.indexOf("回", 0) + 1)
-    //       );
-
-    //       // 日時設定
-    //       var eventYear = Number(eventDate.substr(0, 4));
-    //       var eventMonth = Number(eventDate.substr(5, 2));
-    //       var eventDay = Number(eventDate.substr(8, 2));
-    //       $("#to_eventYear").text(eventYear + "年");
-    //       $("#to_eventDate").text(eventMonth + "月" + eventDay + "日");
-    //       var eventShour = Number(eventDate.substr(11, 2));
-    //       var eventSmin = Number(eventDate.substr(14, 2));
-    //       $("#to_eventStime").text(eventShour + "時" + eventSmin + "分");
-    //       var eventEhour = Number(eventEnd.substr(11, 2));
-    //       var eventEmin = Number(eventEnd.substr(14, 2));
-    //       $("#to_eventEtime").text(eventEhour + "時" + eventEmin + "分");
-
-    //       // 会場
-    //       var eventPlace = data.events[count].place;
-    //       $("#to_eventPlace").text(eventPlace);
-    //       //var eventAddress = data.events[count].address;
-    //       //$('#eventAddress').text(eventAddress);
-    //       //$('#eventMap').attr('src', "http://maps.google.co.jp/maps?&output=embed&q=" + eventPlace + "&z=18");
-
-    //       // 募集状況
-    //       var eventLimit = data.events[count].limit;
-    //       var eventAccepted = data.events[count].accepted;
-    //       var eventWaiting = data.events[count].waiting;
-    //       $("#to_eventLimit").text(eventLimit);
-    //       $("#to_eventAccepted").text(eventAccepted);
-    //       $("#to_eventWaiting").text(eventWaiting);
-    //     } else if (0 == count) {
-    //       // 要素の表示
-    //       $("#second-card").show();
-
-    //       // イベント開催日時 (ISO-8601形式)
-    //       var eventDate = data.events[count].started_at;
-    //       var eventEnd = data.events[count].ended_at;
-    //       var evDate =
-    //         eventDate.substr(0, 4) +
-    //         eventDate.substr(5, 2) +
-    //         eventDate.substr(8, 2);
-
-    //       // connpass.com 上のURL
-    //       if (evDate <= toDate) {
-    //         $("#nx_enterBtn").text("終了しました");
-    //       } else {
-    //         var eventUrl = data.events[count].event_url;
-    //         $("#nx_eventLink").attr(
-    //           "onClick",
-    //           "location.href='" + eventUrl + "'"
-    //         );
-    //         $("#nx_enterBtn").text("参加お申込みはこちら");
-    //       }
-
-    //       // タイトル
-    //       var eventTitle = data.events[count].title;
-    //       $("#nx_eventTitle").text(
-    //         eventTitle.substring(0, eventTitle.indexOf("回", 0) + 1)
-    //       );
-
-    //       // 日時設定
-    //       var eventYear = Number(eventDate.substr(0, 4));
-    //       var eventMonth = Number(eventDate.substr(5, 2));
-    //       var eventDay = Number(eventDate.substr(8, 2));
-    //       $("#nx_eventYear").text(eventYear + "年");
-    //       $("#nx_eventDate").text(eventMonth + "月" + eventDay + "日");
-    //       var eventShour = Number(eventDate.substr(11, 2));
-    //       var eventSmin = Number(eventDate.substr(14, 2));
-    //       $("#nx_eventStime").text(eventShour + "時" + eventSmin + "分");
-    //       var eventEhour = Number(eventEnd.substr(11, 2));
-    //       var eventEmin = Number(eventEnd.substr(14, 2));
-    //       $("#nx_eventEtime").text(eventEhour + "時" + eventEmin + "分");
-
-    //       // 会場
-    //       var eventPlace = data.events[count].place;
-    //       $("#nx_eventPlace").text(eventPlace);
-    //       //var eventAddress = data.events[count].address;
-    //       //$('#eventAddress').text(eventAddress);
-    //       //$('#eventMap').attr('src', "http://maps.google.co.jp/maps?&output=embed&q=" + eventPlace + "&z=18");
-
-    //       // 募集状況
-    //       var eventLimit = data.events[count].limit;
-    //       var eventAccepted = data.events[count].accepted;
-    //       var eventWaiting = data.events[count].waiting;
-    //       $("#nx_eventLimit").text(eventLimit);
-    //       $("#nx_eventAccepted").text(eventAccepted);
-    //       $("#nx_eventWaiting").text(eventWaiting);
-    //     }
-    //     count = 1 + count;
-    //   });
-    //   if (0 < count) {
-    //     $("#infomation").hide();
-    //   } else {
-    //     $("#to-table").remove();
-    //     $("#nx-table").remove();
-    //   }
-    // })
-    // .fail(function (jqXHR, textStatus, errorThrown) {
-    //   $("#eventLink").attr(
-    //     "onClick",
-    //     "location.href='https://coderdojo-tachikawa.connpass.com/'"
-    //   );
+      $(".list-group").append(eventList);
     });
-});
+  });
+};
+
+function compareDate(date1, date2) {
+  let result = null;
+  let cDate1 = new Date(date1);
+  let cDate2 = new Date(date2);
+
+  cDate1.setHours(0);
+  cDate1.setMinutes(0);
+  cDate1.setSeconds(0);
+  cDate2.setHours(0);
+  cDate2.setMinutes(0);
+  cDate2.setSeconds(0);
+
+  if (cDate1 == cDate2) {
+    result = 0;
+  }
+  if (cDate1 < cDate2) {
+    result = 1;
+  }
+  if (cDate1 > cDate2) {
+    result = -1;
+  }
+
+  return result;
+}

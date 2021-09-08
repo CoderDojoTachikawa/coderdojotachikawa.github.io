@@ -1,5 +1,28 @@
-<%-partial('partials/recent-posts')%>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="events">
+        <ul class="list-group mt-4"></ul>
+        <div class="mt-2">
+          <a href="https://coderdojo-tachikawa.connpass.com/"><img src="../images/connpass_logo_1.png" width="114px" height="39px" /></a><br/>
+          <p class="subtext">
+            * イベントの募集には「connpass」を利用しています。<br/>
+            * 開催内容や申し込みについては詳細ページをご確認ください。<br/>
+            * connpassのグループメンバーに登録いただくと、イベントの募集開始の通知や私達からのメッセージをメールで受け取ることができます。
+          </p>
+        </div>
+      </div>
 
-<div id="paginator">
-  <%-paginator()%>
+      <%-partial('partials/recent-posts')%>
+
+      <div id="paginator"><%-paginator()%></div>
+    </div>
+  </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  // connpassおイベント情報を取得
+  getConnpassEvents();
+});
+</script>

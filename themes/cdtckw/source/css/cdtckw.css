@@ -6,3 +6,42 @@
 body {
   margin: 0;
 }
+
+.radius-f-20 {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.v-middle {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.subtext {
+  color: #666666;
+  font-size: 14px;
+}
+
+.td-none {
+  text-decoration: none;
+}
+
+.d-inline {
+  display: inline;
+}
+
+.icon-shadow {
+  filter: drop-shadow(0px 0px 2px #FCFCAA);
+}
+
+.icon-l {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-m {
+  width: 32px;
+  height: 32px;
+}

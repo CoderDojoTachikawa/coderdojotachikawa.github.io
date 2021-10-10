@@ -20,7 +20,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #4d97ff;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="background-color: #ffffff; border-radius: 20px; padding-left: 0.5em; padding-right: 0.5em;">CoderDojo 立川</a>
+      <a class="navbar-brand radius-f-20" href="#"><img src="../images/dojo-logo.jpg" width="48px" height="48px">CoderDojo 立川</a>
       <button class="navbar-toggler" style="background-color: #FFAB19;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -46,15 +46,30 @@
 
 <div id="content-outer">
   <div id="content-inner">
-    
+    <div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="events">
+        <ul class="list-group mt-4"></ul>
+        <div class="mt-2">
+          <a target="_blank" rel="noopener" href="https://coderdojo-tachikawa.connpass.com/"><img src="../images/connpass_logo_1.png" width="114px" height="39px" /></a><br/>
+          <p class="subtext">
+            * イベントの募集には「connpass」を利用しています。<br/>
+            * 開催内容や申し込みについては詳細ページをご確認ください。<br/>
+            * connpassのグループメンバーに登録いただくと、イベントの募集開始の通知や私達からのメッセージをメールで受け取ることができます。
+          </p>
+        </div>
+      </div>
+
+      
 
   <div id="recent-posts">
     <h1>Recent Posts</h1>
     
       <div class="recent-post-item">
-        <a href="/2021/08/28/hello-world/">Hello World</a>
-        <time datetime="2021-08-28T04:02:16.861Z">
-          2021-08-28
+        <a href="/2021/10/10/hello-world/">Hello World</a>
+        <time datetime="2021-10-10T06:21:34.268Z">
+          2021-10-10
         </time>
       </div>
     
@@ -62,9 +77,17 @@
 
 
 
-<div id="paginator">
-  <span class="page-number current">1</span>
+      <div id="paginator"><span class="page-number current">1</span></div>
+    </div>
+  </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  // connpassおイベント情報を取得
+  getConnpassEvents();
+});
+</script>
 
   </div>
 </div>
@@ -82,6 +105,8 @@
   <!-- scripts list from theme config.yml -->
   
     <script src="/js/cdtckw.js"></script>
+  
+    <script src="/js/connpassAPI.js"></script>
   
 
 

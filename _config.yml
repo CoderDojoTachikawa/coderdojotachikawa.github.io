@@ -103,4 +103,7 @@ theme: cdtckw
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: github
+  repo: https://github.com/CoderDojoTachikawa/coderdojotachikawa.github.io
+  branch: develop
+  message: Hexo deploy
